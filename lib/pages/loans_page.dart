@@ -19,7 +19,7 @@ class _LoansPageState extends State<LoansPage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Center(child: Text('Prestamos aprobados')),
+            const Center(child: Text('Prestamos Aprobados')),
             OutlinedButton(
               style: ButtonStyle(
                   backgroundColor:
@@ -39,10 +39,52 @@ class _LoansPageState extends State<LoansPage> {
         ),
       ),
       body: Container(
-        child: ListView(
-          children: <Widget>[
-            Card(
-              child: UnitLoan(Loan(2, '17.0%', '20000.00', '18000.00')),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        'Bienvenido: ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
+                      Text('Nombre'),
+                    ],
+                  ),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: [
+                          const Text(
+                            'Saldo: ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue),
+                          ),
+                          Text('\$ 12000.00'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                children: <Widget>[
+                  Card(
+                    child: UnitLoan(Loan(2, '17.0%', '20000.00', '18000.00')),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
