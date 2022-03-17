@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loans_flutter/models/loan.dart';
 import 'package:loans_flutter/models/order.dart';
-import 'package:loans_flutter/widgets/unit_order.dart';
+import 'package:loans_flutter/ui/widgets/unit_order.dart';
 
 class OrdersPage extends StatefulWidget {
   const OrdersPage({Key? key}) : super(key: key);

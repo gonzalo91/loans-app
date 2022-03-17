@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:loans_flutter/helpers/verify_auth.dart';
 
-import 'package:loans_flutter/pages/loans_page.dart';
-import 'package:loans_flutter/pages/login_page.dart';
-import 'package:loans_flutter/pages/orders_page.dart';
+import 'package:loans_flutter/ui/pages/loans_page.dart';
+import 'package:loans_flutter/ui/pages/login_page.dart';
+import 'package:loans_flutter/ui/pages/orders_page.dart';
+import 'package:loans_flutter/injection_container.dart' as ic;
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  await ic.init();
 
   var verifyAuth = await VerifyAuth().verify();
 

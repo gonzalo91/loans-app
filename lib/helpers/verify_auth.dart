@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:loans_flutter/api/http_client.dart';
 import 'package:loans_flutter/api/secure_local_storage.dart';
+import 'package:loans_flutter/datasources/auth.dart';
 
 class VerifyAuth {
   Future<AuthModel> verify() async {
-    print('Verify!');
     String? token = await _verifyTokenLocalStorage();
 
     if (token == null) {
@@ -20,19 +20,7 @@ class VerifyAuth {
   }
 
   Future<bool> _verifyValidToken() async {
-    var httpClient = HttpClient();
-    try {
-      var response = await httpClient.get('user');
-      print(response);
-      print(response.statusCode);
-      if (response.statusCode != 200) {
-        throw HttpException('${response.statusCode}');
-      }
-
-      return true;
-    } on Exception {
-      return false;
-    }
+    return await AuthDatasource.verifyToken();
   }
 
   Future<String?> _verifyTokenLocalStorage() async {
