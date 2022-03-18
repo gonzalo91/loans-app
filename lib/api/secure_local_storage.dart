@@ -22,7 +22,7 @@ class SecureLocalStorage implements SecureLocalStorageRepo {
   }
 
   @override
-  Future<String?> read(String key) {
-    return storage.read(key: key);
+  Future<String?> read(String key) async {
+    return await storage.read(key: key);
   }
 }

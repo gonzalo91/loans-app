@@ -1,10 +1,13 @@
 import 'dart:io';
 
-import 'package:loans_flutter/api/http_client.dart';
-import 'package:loans_flutter/api/secure_local_storage.dart';
 import 'package:loans_flutter/datasources/auth.dart';
+import 'package:loans_flutter/injection_container.dart';
+import 'package:loans_flutter/contracts/api/secure_local_storage_repo.dart';
 
-class VerifyAuth {
+class VerifyAuthHelper {
+  final SecureLocalStorageRepo secureLocalStorage =
+      sl<SecureLocalStorageRepo>();
+
   Future<AuthModel> verify() async {
     String? token = await _verifyTokenLocalStorage();
 
@@ -24,8 +27,6 @@ class VerifyAuth {
   }
 
   Future<String?> _verifyTokenLocalStorage() async {
-    SecureLocalStorage secureLocalStorage = SecureLocalStorage();
-
     return await secureLocalStorage.read('token');
   }
 }
