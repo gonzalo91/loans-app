@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                     const Center(
                       child: Image(
                         image: AssetImage(
-                            'images/prestamos.tk-logo-small-nobg.png'),
+                            'assets/images/prestamos.tk-logo-small-nobg.png'),
                       ),
                     ),
                     const SizedBox(

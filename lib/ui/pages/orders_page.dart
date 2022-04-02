@@ -20,7 +20,7 @@ class _OrdersPageState extends State<OrdersPage> {
           children: <Widget>[
             Card(
               child: UnitOrder(Order(10, 3, 'Aprobada', '2022-10-10',
-                  '\$ 200.00', Loan(2, '17.0%', '20000.00', '18000.00'))),
+                  '\$ 200.00', Loan(2, '17.0%', '20000.00', '18000.00', 2))),
             ),
           ],
         ),

@@ -27,17 +27,21 @@ class RootBloc extends Bloc<RootEvent, RootState> {
   }
 
   Future<void> _verifyAuth(emit) async {
-    var verifiedModel = await _verifyAuthServiceRepo.verify();
+    try {
+      var verifiedModel = await _verifyAuthServiceRepo.verify();
 
-    if (!hasRemoveSplash) {
-      FlutterNativeSplash.remove();
-      hasRemoveSplash = true;
+      if (verifiedModel.status == Statuses.authenticated) {
+        return emit(RootAuthenticated());
+      }
+
+      return emit(RootUnauthenticated());
+    } catch (e) {
+      return emit(RootUnauthenticated());
+    } finally {
+      if (!hasRemoveSplash) {
+        FlutterNativeSplash.remove();
+        hasRemoveSplash = true;
+      }
     }
-
-    if (verifiedModel.status == Statuses.authenticated) {
-      return emit(RootAuthenticated());
-    }
-
-    return emit(RootUnauthenticated());
   }
 }
