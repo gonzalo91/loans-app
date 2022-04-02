@@ -30,7 +30,9 @@ class AuthUser {
       json['name'] as String,
       json['email'] as String,
       json['image_profile'] as String,
-      double.parse(json['balance'] as String),
+      json['balance'] is String
+          ? double.parse(json['balance'] as String)
+          : json['balance'],
     );
   }
 
