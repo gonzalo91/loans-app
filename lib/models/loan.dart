@@ -11,5 +11,9 @@ class Loan {
   final String _amountToFund;
   String get amountToFund => _amountToFund;
 
-  Loan(this._id, this._rate, this._totalAmount, this._amountToFund);
+  final int _userOrderCount;
+  int get userOrderCount => _userOrderCount;
+
+  Loan(this._id, this._rate, this._totalAmount, this._amountToFund,
+      this._userOrderCount);
 }

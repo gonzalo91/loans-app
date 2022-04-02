@@ -24,25 +24,36 @@ class UnitLoan extends StatelessWidget {
           children: [
             const Text(
               'Por fondear: ',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                  fontSize: 12),
             ),
-            Text('${loan.amountToFund}'),
+            Text(
+              '${loan.amountToFund}',
+              style: TextStyle(fontSize: 12),
+            ),
           ],
         ),
       ),
-      subtitle: Row(
+      subtitle: Column(
         children: [
-          Text('ID: # ${loan.id}'),
-          Container(
-            width: 52,
+          Row(
+            children: [
+              const Text(
+                'Total prestamo: ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              ),
+              Text(
+                '${loan.totalAmount}',
+                style: TextStyle(fontSize: 12),
+              ),
+            ],
           ),
-          const Text(
-            'Total prestamo: ',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text('${loan.totalAmount}'),
-          Container(
-            width: 52,
+          Row(
+            children: [
+              Text('ID: # ${loan.id}'),
+            ],
           ),
         ],
       ),
@@ -62,7 +73,7 @@ class UnitLoan extends StatelessWidget {
                   topLeft: Radius.circular(24), topRight: Radius.circular(24)),
             ),
             builder: (context) => FractionallySizedBox(
-              heightFactor: 0.4,
+              heightFactor: 0.6,
               child: FormFundLoan(loan),
             ),
           );

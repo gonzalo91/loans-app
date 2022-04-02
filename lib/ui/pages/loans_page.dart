@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:loans_flutter/models/loan.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:loans_flutter/ui/widgets/unit_loan.dart';
+import 'package:loans_flutter/ui/pages/blocs/loans/loans_bloc.dart';
+import 'package:loans_flutter/ui/pages/blocs/loans_list/loans_list_cubit.dart';
 
 class LoansPage extends StatefulWidget {
   const LoansPage({Key? key}) : super(key: key);
@@ -12,79 +15,138 @@ class LoansPage extends StatefulWidget {
 class _LoansPageState extends State<LoansPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Center(child: Text('Prestamos Aprobados')),
-            OutlinedButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.lightBlue)),
-              onPressed: () {
-                Navigator.pushNamed(context, '/orders-page');
-              },
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Tus prestamos',
-                  style: TextStyle(fontSize: 12, color: Colors.white),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LoansBloc>(create: (_) => LoansBloc()),
+        BlocProvider<LoansListCubit>(create: (_) => LoansListCubit()),
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Center(
+                  child: Text(
+                'Fondeo',
+                // style: TextStyle(fontSize: 12),
+              )),
+              OutlinedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.lightBlue)),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/orders-page');
+                },
+                child: Container(
+                  child: const Text(
+                    'Tus prestamos',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: BlocBuilder<LoansBloc, LoansState>(
+          builder: (context, state) {
+            return Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    children: [
-                      const Text(
-                        'Bienvenido: ',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      Text('Nombre'),
-                    ],
-                  ),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        children: [
-                          const Text(
-                            'Saldo: ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue),
+                  Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Text(
+                              'Bienvenido: ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                            if (state is LoansInitial) Text(state.name),
+                          ],
+                        ),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                const Text(
+                                  'Saldo: ',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue),
+                                ),
+                                if (state is LoansInitial)
+                                  Text("\$ ${state.balance.toString()}"),
+                              ],
+                            ),
                           ),
-                          Text('\$ 12000.00'),
-                        ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        var bloc = BlocProvider.of<LoansListCubit>(context);
+
+                        await bloc.getLoans();
+                      },
+                      child: BlocBuilder<LoansListCubit, LoansListState>(
+                        builder: (context, state) {
+                          if (state is LoadingState) {
+                            return CircularProgressIndicator();
+                          }
+
+                          if (state is ErrorState) {
+                            return Container(
+                              height: 120,
+                              width: double.infinity,
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: Row(
+                                      children: const [
+                                        Text('Hubo un error'),
+                                        Icon(Icons.close),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+
+                          if (state is LoadedState) {
+                            return ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              children: state.loans
+                                  .map(
+                                    (l) => Card(
+                                      child: UnitLoan(
+                                        l,
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                          }
+
+                          return Container();
+                        },
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  Card(
-                    child: UnitLoan(Loan(2, '17.0%', '20000.00', '18000.00')),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
