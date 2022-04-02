@@ -28,7 +28,7 @@ class HttpClient implements HttpClientRepo {
 
   Future<http.Response> post(
     url,
-    Map<String, String> body,
+    Map<String, dynamic> body,
   ) async {
     SecureLocalStorage secureLocalStorage = SecureLocalStorage();
     String? token = await secureLocalStorage.read('token');
