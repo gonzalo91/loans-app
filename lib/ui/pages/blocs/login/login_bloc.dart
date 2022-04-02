@@ -12,27 +12,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   LoginBloc() : super(LoginInitial()) {
     on<LoginAttemptEvent>((event, emit) async {
-      emit(LoginVerifing());
+      try {
+        emit(LoginVerifing());
 
-      var login = await loginService.login(event.email, event.password);
+        var login = await loginService.login(event.email, event.password);
 
-      if (login.isRight) {
-        return emit(LoginSuccessState());
-      }
+        if (login.isRight) {
+          return emit(LoginSuccessState());
+        }
 
-      if (login.left is ValidationError) {
-        var error = login.left as ValidationError;
-        return emit(
-          LoginValidationErrorState(
-            error.failedValidations,
-          ),
-        );
-      }
+        if (login.left is ValidationError) {
+          var error = login.left as ValidationError;
+          return emit(
+            LoginValidationErrorState(
+              error.failedValidations,
+            ),
+          );
+        }
 
-      if (login.left is TooManyAttemptsError) {
-        return emit(
-          TooManyAttemptsErrorState(login.left.message),
-        );
+        if (login.left is TooManyAttemptsError) {
+          return emit(
+            TooManyAttemptsErrorState(login.left.message),
+          );
+        }
+      } catch (e) {
+        emit(LoginErrorState());
       }
     });
   }

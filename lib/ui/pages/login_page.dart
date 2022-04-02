@@ -74,6 +74,12 @@ class _LoginPageState extends State<LoginPage> {
                   RootCheckAuth(),
                 );
           }
+
+          if (state is LoginErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Hubo un error al tratar de iniciar sesión'),
+            ));
+          }
         },
         child: Scaffold(
             backgroundColor: _backgroundColor,
