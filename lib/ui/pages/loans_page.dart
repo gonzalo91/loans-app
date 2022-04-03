@@ -56,19 +56,22 @@ class _LoansPageState extends State<LoansPage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.all(12),
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            const Text(
-                              'Bienvenido: ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                            if (state is LoansInitial) Text(state.name),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Bienvenido: ',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              if (state is LoansInitial) Text(state.name),
+                            ],
+                          ),
                         ),
                         Card(
                           child: Padding(
