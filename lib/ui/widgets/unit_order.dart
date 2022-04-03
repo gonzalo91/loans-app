@@ -28,19 +28,9 @@ class UnitOrder extends StatelessWidget {
                 child: Text(
                   'Id Orden: ${order.id}',
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.blue),
-                ),
-              ),
-            ),
-            Flexible(
-              child: FractionallySizedBox(
-                widthFactor: 1,
-                child: Text(
-                  order.statusText,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: getStatusColor(),
-                  ),
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
                 ),
               ),
             ),
@@ -50,6 +40,7 @@ class UnitOrder extends StatelessWidget {
                 child: Text(
                   order.date,
                   style: const TextStyle(
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -58,22 +49,23 @@ class UnitOrder extends StatelessWidget {
           ],
         ),
       ),
-      subtitle: Row(
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text('ID Prestamo: # ${order.loan.id}'),
-          Container(
-            width: 52,
-          ),
-          const Text(
-            'Total prestamo: ',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text('${order.loan.totalAmount}'),
+          Text(
+            order.statusText,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: getStatusColor(),
+            ),
+          )
         ],
       ),
       trailing: Text(
         order.amountToShow,
-        style: const TextStyle(color: Colors.green, fontSize: 18),
+        style: const TextStyle(color: Colors.green, fontSize: 12),
       ),
     );
   }
