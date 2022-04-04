@@ -1,32 +1,35 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:loans_flutter/contracts/api/secure_local_storage_repo.dart';
-import 'package:loans_flutter/contracts/services/verify_auth_service_repo.dart';
-import 'package:loans_flutter/injection_container.dart';
 import 'package:meta/meta.dart';
 
-part 'loans_event.dart';
-part 'loans_state.dart';
+import 'package:loans_flutter/injection_container.dart';
+import 'package:loans_flutter/contracts/api/secure_local_storage_repo.dart';
+import 'package:loans_flutter/contracts/services/verify_auth_service_repo.dart';
 
-class LoansBloc extends Bloc<LoansEvent, LoansState> {
+part 'user_info_state.dart';
+
+class UserInfoCubit extends Cubit<UserInfoState> {
   final SecureLocalStorageRepo secureLocalStorageRepo =
       sl<SecureLocalStorageRepo>();
 
-  LoansBloc() : super(LoansInitial('', 0.00)) {
+  UserInfoCubit() : super(UserInfoInitial('', '', '', '')) {
     getUserData();
-
-    on<LoansEvent>((event, emit) {
-      // TODO: implement event handler
-    });
   }
 
   getUserData() async {
     String? userString = await secureLocalStorageRepo.read('user');
+
     if (!["", null, false, 0].contains(userString)) {
       var authUser = AuthUser.fromJson(jsonDecode((userString as String)));
 
-      emit(LoansInitial(authUser.name, authUser.balance));
+      emit(UserInfoInitial(authUser.name, authUser.balance.toString(),
+          authUser.email, authUser.imageProfile));
     }
+  }
+
+  logOut() async {
+    await secureLocalStorageRepo.delete('user');
+    await secureLocalStorageRepo.delete('token');
   }
 }

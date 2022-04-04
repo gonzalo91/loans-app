@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:loans_flutter/ui/widgets/unit_loan.dart';
-import 'package:loans_flutter/ui/pages/blocs/loans/loans_bloc.dart';
+import 'package:loans_flutter/ui/pages/blocs/user_info/user_info_cubit.dart';
 import 'package:loans_flutter/ui/pages/blocs/loans_list/loans_list_cubit.dart';
 
 class LoansPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class _LoansPageState extends State<LoansPage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LoansBloc>(create: (_) => LoansBloc()),
+        BlocProvider<UserInfoCubit>(create: (_) => UserInfoCubit()),
         BlocProvider<LoansListCubit>(create: (_) => LoansListCubit()),
       ],
       child: Scaffold(
@@ -47,7 +47,7 @@ class _LoansPageState extends State<LoansPage> {
             ],
           ),
         ),
-        body: BlocBuilder<LoansBloc, LoansState>(
+        body: BlocBuilder<UserInfoCubit, UserInfoState>(
           builder: (context, state) {
             return Container(
               child: Column(
@@ -61,16 +61,38 @@ class _LoansPageState extends State<LoansPage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Bienvenido: ',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ),
-                              if (state is LoansInitial) Text(state.name),
-                            ],
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/user-page');
+                            },
+                            child: Row(
+                              children: [
+                                const Text(
+                                  'Bienvenido: ',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                if (state is UserInfoInitial)
+                                  Row(
+                                    children: [
+                                      Text(
+                                        state.name,
+                                        style:
+                                            TextStyle(color: Colors.blue[300]),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Icon(
+                                          Icons.outbond,
+                                          color: Colors.blue[300],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
                         Card(
@@ -84,8 +106,8 @@ class _LoansPageState extends State<LoansPage> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.blue),
                                 ),
-                                if (state is LoansInitial)
-                                  Text("\$ ${state.balance.toString()}"),
+                                if (state is UserInfoInitial)
+                                  Text("\$ ${state.balance}"),
                               ],
                             ),
                           ),

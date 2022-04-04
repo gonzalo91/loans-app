@@ -6,6 +6,7 @@ import 'package:loans_flutter/ui/pages/loans_page.dart';
 import 'package:loans_flutter/ui/pages/login_page.dart';
 import 'package:loans_flutter/ui/pages/orders_page.dart';
 import 'package:loans_flutter/injection_container.dart' as ic;
+import 'package:loans_flutter/ui/pages/user_page.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/loans-page': (context) => const LoansPage(),
+        '/user-page': (context) => const UserPage(),
         '/orders-page': (context) => const OrdersPage(),
       },
     );

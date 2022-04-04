@@ -26,8 +26,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailController = TextEditingController(text: "test1@mail.com");
-  final passwordController = TextEditingController(text: 'test1@mail.com');
+  final emailController = TextEditingController(text: "mail1@mail.com");
+  final passwordController = TextEditingController(text: 'mail1@mail.com');
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
 
