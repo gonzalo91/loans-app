@@ -2,6 +2,12 @@
 
 A new Flutter project.
 
+
+## Versions
+
+v1.0: Includes Auth, Loans List, Orders List And Profile Page
+v2.0: Push Notifications Added
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
