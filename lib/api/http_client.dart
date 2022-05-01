@@ -5,7 +5,8 @@ import 'package:loans_flutter/api/secure_local_storage.dart';
 import 'package:loans_flutter/contracts/api/http_client_repo.dart';
 
 class HttpClient implements HttpClientRepo {
-  final String baseUrl = 'http://localhost/api/';
+  final String baseUrl = 'https://prestamos.tk/api/';
+  //final String baseUrl = 'http://192.168.1.72/api/';
   static final _instance = HttpClient._internal();
 
   factory HttpClient() {
@@ -35,6 +36,21 @@ class HttpClient implements HttpClientRepo {
     var uri = Uri.parse('$baseUrl$url');
 
     return http.post(uri, body: jsonEncode(body), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+  }
+
+  Future<http.Response> delete(
+    url,
+    Map<String, dynamic> body,
+  ) async {
+    SecureLocalStorage secureLocalStorage = SecureLocalStorage();
+    String? token = await secureLocalStorage.read('token');
+    var uri = Uri.parse('$baseUrl$url');
+
+    return http.delete(uri, body: jsonEncode(body), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
