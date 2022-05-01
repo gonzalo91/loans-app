@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'package:loans_flutter/injection_container.dart';
 import 'package:loans_flutter/ui/widgets/unit_loan.dart';
 import 'package:loans_flutter/ui/pages/blocs/user_info/user_info_cubit.dart';
+import 'package:loans_flutter/contracts/services/manage_fcm_token_repo.dart';
 import 'package:loans_flutter/ui/pages/blocs/loans_list/loans_list_cubit.dart';
 
 class LoansPage extends StatefulWidget {
@@ -13,6 +16,22 @@ class LoansPage extends StatefulWidget {
 }
 
 class _LoansPageState extends State<LoansPage> {
+  final ManageFcmTokenRepo manageFcmTokenService = sl<ManageFcmTokenRepo>();
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging.instance.getToken().then((value) {
+      if (value != null && value.isNotEmpty) {
+        manageFcmTokenService.save(value);
+      }
+    });
+
+    FirebaseMessaging.instance.onTokenRefresh.listen((value) {
+      manageFcmTokenService.update(value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(

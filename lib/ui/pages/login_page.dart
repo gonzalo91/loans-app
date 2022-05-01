@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loans_flutter/datasources/auth.dart';
+
 import 'package:loans_flutter/ui/bloc/root_bloc.dart';
 import 'package:loans_flutter/ui/pages/blocs/login/login_bloc.dart';
 
